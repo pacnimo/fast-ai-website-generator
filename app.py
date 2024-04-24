@@ -99,7 +99,7 @@ if send_button and api_key:
         for file_link in file_links:
             with open(file_link, "rb") as file:
                 btn_label = f"Download {os.path.basename(file_link)}"
-                st.download_button(label=btn_label, data=file, file_name=os.path.basename(file_link), mime='text/html' if 'html' in file_link else 'text/css')
+                st.markdown(f'<a href="data:file/{os.path.basename(file_link)};base64,{base64.b64encode(file.read()).decode()}" download="{os.path.basename(file_link)}" target="_blank">{btn_label}</a>', unsafe_allow_html=True)
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
 
