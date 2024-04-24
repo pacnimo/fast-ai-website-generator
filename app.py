@@ -3,8 +3,7 @@ import requests
 import re
 import os
 import uuid
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-import threading
+import base64
 
 def ensure_dir(directory):
     if not os.path.exists(directory):
@@ -19,15 +18,6 @@ def extract_code(text, language):
     if match:
         return match.group(1).strip()
     return None
-
-def serve_files(directory):
-    os.chdir(directory)  # Change working directory to the static files directory
-    handler = SimpleHTTPRequestHandler
-    server = HTTPServer(('https://fast-ai-website-generator.streamlit.app/', 0), handler)  # Serve on any available port
-    thread = threading.Thread(target=server.serve_forever)
-    thread.daemon = True
-    thread.start()
-    return server.server_address[1]  # Return the port number where the server is listening
 
 def send_request_and_process(api_key, system_prompt, user_message):
     unique_dir_name = str(uuid.uuid4())
@@ -68,11 +58,9 @@ def send_request_and_process(api_key, system_prompt, user_message):
         save_to_file(css_code, 'styles.css', directory)
         file_links.append(os.path.join(directory, 'styles.css'))
 
-    port = serve_files(directory)
-    return completion_content, directory, file_links, port
+    return completion_content, directory, file_links
     
 st.set_page_config(page_title="Fastes Free AI Website Generator", page_icon="🚀", layout="wide")
-
 
 st.title("Fastes Free AI Website Generator: Instant Html and CSS")
 st.markdown("""
@@ -83,37 +71,30 @@ Welcome to the Fastest Free AI Website Generator! This app is designed to genera
 - **Contact Us:** If you have any questions or suggestions, please feel free to [contact us](mailto:contact@example.com).
 """)
 
-
-
 col1, col2 = st.columns([0.3, 0.68])
 
 with col1:
     st.title('Settings')
-    api_key = st.text_input("Enter your Groq API key:", type="password", help="Get your Groq API key from [Groq API](https://console.groq.com/keys)")  # Fixed link handling in helper tooltip instead
-    system_prompt = st.text_area("System Prompt:", "Your are an Expert in Planing and Website Design, html and css, you are aware of the latest trends like glassmorphism design and the 60 30 10 rule, when you create a website design you always create in one shot a well planed design where all elements are designed, for placeholder images you use placeholder.com, your planing is a inner monoglogue, your response always involves only the html and css code in this format: ```{language}(.*?)```! You Always resonse with Full Designs without any <!-- Placeholders.")
-    user_message = st.text_input("User Message:", "Create a modern, dark-themed website utilizing the glassmorphism design trend to showcase a futuristic photo portfolio. The website should be crafted using HTML and CSS, featuring demo content that exemplifies the aesthetic and functional capabilities of the design. The overall feel should be sleek and forward-thinking, with interactive elements that enhance user engagement. Ensure the site is responsive and accessible on various devices. Show me a Full Designed Index Site, give me your best Result and I give you a Bonus of $10.000.")
+    api_key = st.text_input("Enter your Groq API key:", type="password")
+    system_prompt = st.text_area("System Prompt:", "Describe your desired system prompt here.")
+    user_message = st.text_input("User Message:", "Describe your desired user message here.")
     send_button = st.button('Create Website')
 
 with col2:
     st.title('Preview')
     if send_button and api_key:
         try:
-            completion_content, directory, file_links, port = send_request_and_process(api_key, system_prompt, user_message)
-            st.markdown(f'<iframe src="https://fast-ai-website-generator.streamlit.app/:{port}/website.html" width="100%" height="400"></iframe>', unsafe_allow_html=True)
+            completion_content, directory, file_links = send_request_and_process(api_key, system_prompt, user_message)
+            for file in file_links:
+                with open(file, "rb") as f:
+                    base64_file = base64.b64encode(f.read()).decode('utf-8')
+                file_type = 'text/html' if file.endswith('.html') else 'text/css'
+                href = f"data:{file_type};base64,{base64_file}"
+                st.markdown(f"**[View {os.path.basename(file)}]({href})**", unsafe_allow_html=True)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
 if send_button and api_key:
-    st.markdown("### Download Created Files")
-    try:
-        for file_link in file_links:
-            # Generating correct URLs for downloading the files
-            local_path = f"/{os.path.relpath(file_link, start=os.getcwd())}"
-            download_link = f"https://fast-ai-website-generator.streamlit.app/:8501{local_path}"
-            st.markdown(f"[Download {os.path.basename(file_link)}]({download_link})")
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-
     st.markdown("### API Response")
     try:
         st.text_area("API Response:", value=completion_content, height=300)
