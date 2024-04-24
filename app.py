@@ -85,14 +85,11 @@ with col2:
     if send_button and api_key:
         try:
             completion_content, directory, file_links = send_request_and_process(api_key, system_prompt, user_message)
-            for file in file_links:
-                file_type = 'text/html' if file.endswith('.html') else 'text/css'
-                st.markdown(f"### {os.path.basename(file)}")
-                if file_type == 'text/html':
-                    st.markdown(f'<iframe src="{file}" width="100%" height="400"></iframe>', unsafe_allow_html=True)
-                else:
-                    with open(file, 'r') as f:
-                        st.code(f.read(), language="css")
+            html_file_path = [file for file in file_links if file.endswith('.html')][0]
+            html_content = open(html_file_path, 'r').read()
+            base64_html = base64.b64encode(html_content.encode()).decode('utf-8')
+            html_iframe = f'<iframe src="data:text/html;base64,{base64_html}" width="100%" height="400"></iframe>'
+            st.markdown(html_iframe, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
@@ -109,5 +106,4 @@ if send_button and api_key:
     st.markdown("### API Response")
     try:
         st.text_area("API Response:", value=completion_content, height=300)
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
+    except Exception
