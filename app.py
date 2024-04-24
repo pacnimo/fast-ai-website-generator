@@ -64,7 +64,11 @@ st.set_page_config(page_title="Fastest Free AI Website Generator", page_icon="ðŸ
 
 st.title("Fastest Free AI Website Generator: Instant Html and CSS")
 st.markdown("""
-Welcome to the Fastest Free AI Website Generator!
+Welcome to the Fastest Free AI Website Generator! This app is designed to generate ready-to-use HTML and CSS code for your web projects in seconds.
+- **How to Use:** Simply enter your API key, define your system prompt and user message, and click 'Create Website'.
+- **API Key:** Obtain your free API key from [Groq API](https://console.groq.com/keys).
+- **Open Source:** This tool is open-source, feel free to contribute or fork the repository on [GitHub](https://github.com/pacnimo/fast-ai-website-generator/).
+- **Contact Us:** If you have any questions or suggestions, please feel free to [contact us](mailto:contact@example.com).
 """)
 
 col1, col2 = st.columns([0.3, 0.7])
@@ -72,8 +76,8 @@ col1, col2 = st.columns([0.3, 0.7])
 with col1:
     st.title('Settings')
     api_key = st.text_input("Enter your Groq API key:", type="password")
-    system_prompt = st.text_area("System Prompt:", "Your are an Expert...")
-    user_message = st.text_input("User Message:", "Create a modern..")
+    system_prompt = st.text_area("System Prompt:", "Your are an Expert in Planing and Website Design, html and css, you are aware of the latest trends like glassmorphism design and the 60 30 10 rule, when you create a website design you always create in one shot a well planed design where all elements are designed, for placeholder images you use placeholder.com, your planing is a inner monoglogue, your response always involves only the html and css code in this format: ```{language}(.*?)```! Include the css code as Inline css inside the html code! Make Sure you deliver a full website and not some Lazy response.")
+    user_message = st.text_input("User Message:", "Create a modern, dark-themed website utilizing the glassmorphism design trend to showcase a futuristic photo portfolio. The website should be crafted using HTML and CSS, featuring demo content that exemplifies the aesthetic and functional capabilities of the design. The overall feel should be sleek and forward-thinking, with interactive elements that enhance user engagement. Ensure the site is responsive and accessible on various devices. Show me a Full Designed Index Site, give me your best Result and I give you a Bonus of $10.000.")
     send_button = st.button('Create Website')
 
 with col2:
