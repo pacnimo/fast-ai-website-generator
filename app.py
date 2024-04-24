@@ -1,3 +1,8 @@
+# Upcoming Changes:
+# Model Selector
+# Pre Designs as Examples / prompts.. for example to create a Restaurant front Page, or a Car Repair front page.
+# could be optimized by functions, for better settings. like $color , and color chooser. Some Basic Selectors, like. Header, text logo, image logo, navigation, searchbar, search form, main container right / left, sidebar right / left / none, main color, second main color, pagination or endless scrolling, yes no, clients, contact, footer.
+
 import streamlit as st
 import requests
 import re
