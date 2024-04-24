@@ -8,3 +8,6 @@ Welcome to the Fastest Free AI Website Generator! This app is designed to genera
 - **API Key:** Obtain your free API key from [Groq API](https://console.groq.com/keys).
 - **Open Source:** This tool is open-source, feel free to contribute or fork the repository on [GitHub](https://github.com/your-repo-link).
 - **Contact Us:** If you have any questions or suggestions, please feel free to [contact us](mailto:contact@example.com).
+
+Try out:
+[[GitHub](https://fast-ai-website-generator.streamlit.app/)]([https://github.com/your-repo-link](https://fast-ai-website-generator.streamlit.app/)).
