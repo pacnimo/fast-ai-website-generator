@@ -60,9 +60,9 @@ def send_request_and_process(api_key, system_prompt, user_message):
 
     return completion_content, directory, file_links
     
-st.set_page_config(page_title="Fastes Free AI Website Generator", page_icon="🚀", layout="wide")
+st.set_page_config(page_title="Fastest Free AI Website Generator", page_icon="🚀", layout="wide")
 
-st.title("Fastes Free AI Website Generator: Instant Html and CSS")
+st.title("Fastest Free AI Website Generator: Instant Html and CSS")
 st.markdown("""
 Welcome to the Fastest Free AI Website Generator! This app is designed to generate ready-to-use HTML and CSS code for your web projects in seconds.
 - **How to Use:** Simply enter your API key, define your system prompt and user message, and click 'Create Website'.
@@ -71,13 +71,13 @@ Welcome to the Fastest Free AI Website Generator! This app is designed to genera
 - **Contact Us:** If you have any questions or suggestions, please feel free to [contact us](mailto:contact@example.com).
 """)
 
-col1, col2 = st.columns([0.3, 0.68])
+col1, col2 = st.columns([0.3, 0.7])
 
 with col1:
     st.title('Settings')
     api_key = st.text_input("Enter your Groq API key:", type="password")
-    system_prompt = st.text_area("System Prompt:", "Describe your desired system prompt here.")
-    user_message = st.text_input("User Message:", "Describe your desired user message here.")
+    system_prompt = st.text_area("System Prompt:", "Your are an Expert in Planing and Website Design, html and css, you are aware of the latest trends like glassmorphism design and the 60 30 10 rule, when you create a website design you always create in one shot a well planed design where all elements are designed, for placeholder images you use placeholder.com, your planing is a inner monoglogue, your response always involves only the html and css code in this format: ```{language}(.*?)```!")
+    user_message = st.text_input("User Message:", "Create a modern, dark-themed website utilizing the glassmorphism design trend to showcase a futuristic photo portfolio. The website should be crafted using HTML and CSS, featuring demo content that exemplifies the aesthetic and functional capabilities of the design. The overall feel should be sleek and forward-thinking, with interactive elements that enhance user engagement. Ensure the site is responsive and accessible on various devices. Show me a Full Designed Index Site, give me your best Result and I give you a Bonus of $10.000.")
     send_button = st.button('Create Website')
 
 with col2:
@@ -86,15 +86,26 @@ with col2:
         try:
             completion_content, directory, file_links = send_request_and_process(api_key, system_prompt, user_message)
             for file in file_links:
-                with open(file, "rb") as f:
-                    base64_file = base64.b64encode(f.read()).decode('utf-8')
                 file_type = 'text/html' if file.endswith('.html') else 'text/css'
-                href = f"data:{file_type};base64,{base64_file}"
-                st.markdown(f"**[View {os.path.basename(file)}]({href})**", unsafe_allow_html=True)
+                st.markdown(f"### {os.path.basename(file)}")
+                if file_type == 'text/html':
+                    st.markdown(f'<iframe src="{file}" width="100%" height="400"></iframe>', unsafe_allow_html=True)
+                else:
+                    with open(file, 'r') as f:
+                        st.code(f.read(), language="css")
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
 if send_button and api_key:
+    st.markdown("### Download Created Files")
+    try:
+        for file_link in file_links:
+            with open(file_link, "rb") as file:
+                btn_label = f"Download {os.path.basename(file_link)}"
+                st.download_button(label=btn_label, data=file, file_name=os.path.basename(file_link), mime='text/html' if 'html' in file_link else 'text/css')
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+
     st.markdown("### API Response")
     try:
         st.text_area("API Response:", value=completion_content, height=300)
