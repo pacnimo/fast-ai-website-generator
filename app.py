@@ -23,7 +23,7 @@ def extract_code(text, language):
 def serve_files(directory):
     os.chdir(directory)  # Change working directory to the static files directory
     handler = SimpleHTTPRequestHandler
-    server = HTTPServer(('localhost', 0), handler)  # Serve on any available port
+    server = HTTPServer(('https://fast-ai-website-generator.streamlit.app/', 0), handler)  # Serve on any available port
     thread = threading.Thread(target=server.serve_forever)
     thread.daemon = True
     thread.start()
@@ -99,7 +99,7 @@ with col2:
     if send_button and api_key:
         try:
             completion_content, directory, file_links, port = send_request_and_process(api_key, system_prompt, user_message)
-            st.markdown(f'<iframe src="http://localhost:{port}/website.html" width="100%" height="400"></iframe>', unsafe_allow_html=True)
+            st.markdown(f'<iframe src="https://fast-ai-website-generator.streamlit.app/:{port}/website.html" width="100%" height="400"></iframe>', unsafe_allow_html=True)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
@@ -109,7 +109,7 @@ if send_button and api_key:
         for file_link in file_links:
             # Generating correct URLs for downloading the files
             local_path = f"/{os.path.relpath(file_link, start=os.getcwd())}"
-            download_link = f"http://localhost:8501{local_path}"
+            download_link = f"https://fast-ai-website-generator.streamlit.app/:8501{local_path}"
             st.markdown(f"[Download {os.path.basename(file_link)}]({download_link})")
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
