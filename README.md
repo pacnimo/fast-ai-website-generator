@@ -10,4 +10,6 @@ Welcome to the Fastest Free AI Website Generator! This app is designed to genera
 - **Contact Us:** If you have any questions or suggestions, please feel free to [contact us](mailto:contact@example.com).
 
 Try out:
-[[GitHub](https://fast-ai-website-generator.streamlit.app/)]([https://github.com/your-repo-link](https://fast-ai-website-generator.streamlit.app/)).
+[https://fast-ai-website-generator.streamlit.app/](https://fast-ai-website-generator.streamlit.app/)
+
+
