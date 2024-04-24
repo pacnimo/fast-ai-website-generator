@@ -76,8 +76,8 @@ col1, col2 = st.columns([0.3, 0.7])
 with col1:
     st.title('Settings')
     api_key = st.text_input("Enter your Groq API key:", type="password")
-    system_prompt = st.text_area("System Prompt:", "Your are an Expert in Planing and Website Design, html and css, you are aware of the latest trends like glassmorphism design and the 60 30 10 rule, when you create a website design you always create in one shot a well planed design where all elements are designed, for placeholder images you use placeholder.com, your planing is a inner monoglogue, your response always involves only the html and css code in this format: ```{language}(.*?)```!")
-    user_message = st.text_input("User Message:", "Create a modern, dark-themed website utilizing the glassmorphism design trend to showcase a futuristic photo portfolio. The website should be crafted using HTML and CSS, featuring demo content that exemplifies the aesthetic and functional capabilities of the design. The overall feel should be sleek and forward-thinking, with interactive elements that enhance user engagement. Ensure the site is responsive and accessible on various devices. Show me a Full Designed Index Site, give me your best Result and I give you a Bonus of $10.000.")
+    system_prompt = st.text_area("System Prompt:", "Your are an Expert...")
+    user_message = st.text_input("User Message:", "Create a modern...")
     send_button = st.button('Create Website')
 
 with col2:
@@ -100,7 +100,7 @@ if send_button and api_key:
             with open(file_link, "rb") as file:
                 btn_label = f"Download {os.path.basename(file_link)}"
                 st.download_button(label=btn_label, data=file, file_name=os.path.basename(file_link), mime='text/html' if 'html' in file_link else 'text/css')
-        except Exception as e:
+    except Exception as e:
         st.error(f"An error occurred: {str(e)}")
 
     st.markdown("### API Response")
@@ -108,4 +108,3 @@ if send_button and api_key:
         st.text_area("API Response:", value=completion_content, height=300)
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
-
