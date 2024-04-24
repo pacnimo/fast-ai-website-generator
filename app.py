@@ -100,10 +100,12 @@ if send_button and api_key:
             with open(file_link, "rb") as file:
                 btn_label = f"Download {os.path.basename(file_link)}"
                 st.download_button(label=btn_label, data=file, file_name=os.path.basename(file_link), mime='text/html' if 'html' in file_link else 'text/css')
-    except Exception as e:
+        except Exception as e:
         st.error(f"An error occurred: {str(e)}")
 
     st.markdown("### API Response")
     try:
         st.text_area("API Response:", value=completion_content, height=300)
-    except Exception
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+
